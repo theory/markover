@@ -1,0 +1,7 @@
+AC_INIT(markoff.c)
+AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE(markoff,0.0.1)
+AC_COPYRIGHT([Copyright (c) 2009, David E. Wheeler])
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_OUTPUT(Makefile)

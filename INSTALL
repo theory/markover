@@ -1,0 +1,20 @@
+Markoff Installation Instructions
+=================================
+
+This document describes the installation of the Markoff library and
+application from the source code distribution. (If you are installing a
+pre-packaged distribution, such as an RPM or Debian package, ignore this
+document and read the packager's instructions instead.)
+
+Short Version
+-------------
+
+    ./configure
+    make
+    make test
+    sudo make install
+
+Long Version
+------------
+
+There is no long version.
