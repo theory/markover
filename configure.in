@@ -1,4 +1,4 @@
-AC_INIT(markover.c)
+AC_INIT
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(markover,0.0.1)
 AC_COPYRIGHT([Copyright (c) 2009, David E. Wheeler])

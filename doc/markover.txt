@@ -1,0 +1,17 @@
+Markover Documentation
+======================
+
+Usage
+-----
+
+    markover foo.txt > foo.html
+
+Author
+------
+[David E. Wheeler](http://justatheory.com/)
+
+Credits
+-------
+
+* John Gruber for Markdown.
+* Adrian Howard for Test::Exception.
