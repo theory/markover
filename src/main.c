@@ -14,18 +14,14 @@ static void show_usage(void);
 main(int argc, char *argv[]) {
     mo_params params;
     get_markover_options(argc, argv, &params);
-    if (params.verbose)
-        printf("  and we got it: %d\n", params.verbose);
-    if (params.read_from)
-        printf("  and read from: %s\n", params.read_from);
-    if (params.write_to)
-        printf("  and read from: %s\n", params.write_to);
+    markover(&params);
     exit(EXIT_SUCCESS);
 }
 
 static void get_markover_options(int argc, char *argv[], mo_params *params) {
     int c;
 
+    /* Initialize options. */
     params->verbose   = 0;
 
     static struct option long_options[] = {

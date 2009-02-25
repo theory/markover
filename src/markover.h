@@ -4,4 +4,4 @@ typedef struct mo_params {
     int   verbose;
 } mo_params;
 
-static char *markover( mo_params *params );
+void markover( mo_params *params );
