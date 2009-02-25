@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include "markover.h"
 
-void markover( mo_params *params ) {
+void markover( mko_params *params ) {
     if (params->verbose)
         printf("  and we got it: %d\n", params->verbose);
     if (params->read_from)

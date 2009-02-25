@@ -7,18 +7,18 @@
 #include <getopt.h>
 #include "markover.h"
 
-static void get_markover_options(int argc, char *argv[], mo_params *params);
+static void get_markover_options(int argc, char *argv[], mko_params *params);
 static void show_version(void);
 static void show_usage(void);
 
 main(int argc, char *argv[]) {
-    mo_params params;
+    mko_params params;
     get_markover_options(argc, argv, &params);
     markover(&params);
     exit(EXIT_SUCCESS);
 }
 
-static void get_markover_options(int argc, char *argv[], mo_params *params) {
+static void get_markover_options(int argc, char *argv[], mko_params *params) {
     int c;
 
     /* Initialize options. */
