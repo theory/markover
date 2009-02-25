@@ -1,7 +1,33 @@
+#########
+# Basic configuration.
+#
 AC_INIT
-AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE(markover,0.0.1)
 AC_COPYRIGHT([Copyright (c) 2009, David E. Wheeler])
+
+#########
+# Programs needed
+#
 AC_PROG_CC
 AC_PROG_INSTALL
+AC_PROG_LIBTOOL
+
+#########
+# Check for needed/wanted headers
+#
+AC_CHECK_HEADERS([stdlib.h getopt.h])
+
+#########
+# Figure out whether or not we have these functions
+#
+AC_CHECK_FUNCS([getopt_long])
+
+#########
+# Output the config header
+#
+AM_CONFIG_HEADER(config.h)
+
+#########
+# Generate the output files.
+#
 AC_OUTPUT(Makefile)

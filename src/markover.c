@@ -1,10 +1,7 @@
-#if HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <stdio.h>
+#include <stdlib.h>
+#include "markover.h"
 
-main()
-{
-  printf("Howdy world!\n");
+static char *markover( struct mo_params *params ) {
+    return "this is the stuff\n";
 }

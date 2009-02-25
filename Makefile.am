@@ -1,15 +1,26 @@
-#EXTRA_DIST = configure
-#SUBDIRS = lib src doc
-bin_PROGRAMS = markover
-markover_SOURCES = src/markover.c
+bin_PROGRAMS = src/markover
+src_markover_SOURCES = src/markover.c src/main.c
 
 noinst_PROGRAMS = lemon
 lemon_SOURCES = lib/lemon.c
+
+#noinst_LTLIBRARIES = test/libtap.la
+#test_libtap_la_SOURCES = test/tap.c test/tap.h
+
+check_PROGRAMS = test/base
+test_base_SOURCES = test/tap.c test/base.c
+
+TESTS = test/base
+
+.PHONY: test
+test:
+	$(MAKE) $(AM_MAKEFLAGS) $(check_PROGRAMS)
+	prove -e '' $(TESTS)
 
 doc/*.html: markover
 	markdown doc/markover.txt > doc/markover.html
 
 # Let me really clean out the directory.
-REPOCLEANFILES = Makefile.in aclocal.m4 config.* configure depcomp install-sh markover-* missing
+REPOCLEANFILES = Makefile.in aclocal.m4 config.* configure depcomp install-sh markover-* missing ltmain.sh test/.libs src/.libs
 repoclean: maintainer-clean
 	rm -rf $(REPOCLEANFILES)
