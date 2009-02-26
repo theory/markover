@@ -11,6 +11,22 @@ static void get_markover_options(int argc, char *argv[]);
 static void show_version(void);
 static void show_usage(void);
 
+/* #define xpfree(var_) \ */
+/* 	do { \ */
+/* 		if (var_ != NULL) \ */
+/* 		{ \ */
+/* 			pfree(var_); \ */
+/* 			var_ = NULL; \ */
+/* 		} \ */
+/* 	} while (0) */
+
+#define mko_open( fh, fn, mode ) \
+    fh = fopen(fn, mode); \
+    if ( !fh ) { \
+        perror(optarg);\
+        exit(1); \
+    }
+
 main(int argc, char *argv[]) {
     int     c;
     int     flags;
@@ -55,11 +71,7 @@ main(int argc, char *argv[]) {
                 fprintf(stderr, "You can specify --read-from only once!\n");
                 exit(1);
             }
-            read_from = fopen(optarg, "r");
-            if ( !read_from ) {
-                perror(optarg);
-                exit(1);
-            }
+            mko_open(read_from, optarg, "r")
             break;
      
         case 'w':
@@ -67,11 +79,7 @@ main(int argc, char *argv[]) {
                 fprintf(stderr, "You can specify --write-to only once!\n");
                 exit(1);
             }
-            write_to = fopen(optarg, "w");
-            if ( ! write_to) {
-                perror(optarg);
-                exit(1);
-            }
+            mko_open(write_to, optarg, "w");
             break;
 
         case '?':
@@ -86,11 +94,7 @@ main(int argc, char *argv[]) {
      
     /* Print any remaining command line arguments (not options). */
     if (optind < argc && !read_from) {
-        read_from = fopen(argv[optind], "r");
-        if ( ! read_from ) {
-            perror(argv[optind]);
-            exit(1);
-        }
+        mko_open(read_from, argv[optind], "r");
     } else {
         read_from = stdin;
     }
