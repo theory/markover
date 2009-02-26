@@ -7,27 +7,21 @@
 #include <getopt.h>
 #include "markover.h"
 
-static void get_markover_options(int argc, char *argv[], mko_params *params);
+static void get_markover_options(int argc, char *argv[]);
 static void show_version(void);
 static void show_usage(void);
 
 main(int argc, char *argv[]) {
-    mko_params params;
-    get_markover_options(argc, argv, &params);
-    markover(&params);
-    exit(EXIT_SUCCESS);
-}
-
-static void get_markover_options(int argc, char *argv[], mko_params *params) {
-    int c;
-
-    /* Initialize options. */
-    params->verbose   = 0;
+    int     c;
+    int     flags;
+    mko_doc doc;
+    FILE    *read_from = 0;
+    FILE    *write_to  = 0;
 
     static struct option long_options[] = {
         { "version",   no_argument,       0, 'v' },
         { "help",      no_argument,       0, 'h' },
-        { "verbose",   no_argument,       0, 'V' },
+/*      { "verbose",   no_argument,       0, 'V' }, */
         { "read-from", required_argument, 0, 'r' },
         { "write-to",  required_argument, 0, 'w' },
         { 0, 0, 0, 0}
@@ -37,7 +31,7 @@ static void get_markover_options(int argc, char *argv[], mko_params *params) {
         /* getopt_long stores the option index here. */
         int option_index = 0;
 
-        c = getopt_long (argc, argv, "Vhvr:w:", long_options, &option_index);
+        c = getopt_long (argc, argv, "hvr:w:", long_options, &option_index);
      
         /* Detect the end of the options. */
         if (c == -1)
@@ -52,16 +46,32 @@ static void get_markover_options(int argc, char *argv[], mko_params *params) {
             show_usage();
             exit(EXIT_SUCCESS);
 
-        case 'V':
-            params->verbose += 1;
-            break;
+/*         case 'V': */
+/*             params->verbose += 1; */
+/*             break; */
 
         case 'r':
-            params->read_from = optarg;
+            if ( read_from ) {
+                fprintf(stderr, "You can specify --read-from only once!\n");
+                exit(1);
+            }
+            read_from = fopen(optarg, "r");
+            if ( !read_from ) {
+                perror(optarg);
+                exit(1);
+            }
             break;
      
         case 'w':
-            params->write_to = optarg;
+            if ( write_to ) {
+                fprintf(stderr, "You can specify --write-to only once!\n");
+                exit(1);
+            }
+            write_to = fopen(optarg, "w");
+            if ( ! write_to) {
+                perror(optarg);
+                exit(1);
+            }
             break;
 
         case '?':
@@ -75,9 +85,21 @@ static void get_markover_options(int argc, char *argv[], mko_params *params) {
     }
      
     /* Print any remaining command line arguments (not options). */
-    if (optind < argc && !params->read_from) {
-        params->read_from = argv[optind];
+    if (optind < argc && !read_from) {
+        read_from = fopen(argv[optind], "r");
+        if ( ! read_from ) {
+            perror(argv[optind]);
+            exit(1);
+        }
+    } else {
+        read_from = stdin;
     }
+
+    if (!write_to) write_to = stdout;
+
+    mko_parse( &doc, read_from,  flags );
+    markover(  &doc, write_to, flags );
+    exit(EXIT_SUCCESS);
 }
 
 /* show_version
@@ -102,7 +124,7 @@ static void show_usage(void) {
     puts("  -w --write-to   FILENAME  File to which to write output.");
     puts("  -V --verbose              Incremental verbose mode.");
     puts("  -h --help                 Output this usage statement and exit.");
-    puts("  -v --version              Output version information and exit.");
+/*     puts("  -v --version              Output version information and exit."); */
     puts("");
     puts("Report bugs to <bugs@markover.info>.");
 }

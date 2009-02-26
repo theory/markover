@@ -6,11 +6,14 @@
 #include <stdlib.h>
 #include "markover.h"
 
-void markover( mko_params *params ) {
-    if (params->verbose)
-        printf("  and we got it: %d\n", params->verbose);
-    if (params->read_from)
-        printf("  and read from: %s\n", params->read_from);
-    if (params->write_to)
-        printf("  and read from: %s\n", params->write_to);
+void mko_parse( mko_doc *doc, FILE *read_from, int flags ) {
+    printf("parse the read_from file here\n");
+}
+
+void markover( mko_doc *doc, FILE *write_to, int flags ) {
+    mko_to_html(doc, write_to, flags);
+}
+
+void mko_to_html( mko_doc *doc, FILE *write_to, int flags ) {
+    fprintf( write_to, "Send HTML to write_to here\n");
 }
