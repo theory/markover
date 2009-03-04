@@ -11,15 +11,6 @@ static void get_markover_options(int argc, char *argv[]);
 static void show_version(void);
 static void show_usage(void);
 
-/* #define xpfree(var_) \ */
-/* 	do { \ */
-/* 		if (var_ != NULL) \ */
-/* 		{ \ */
-/* 			pfree(var_); \ */
-/* 			var_ = NULL; \ */
-/* 		} \ */
-/* 	} while (0) */
-
 #define mko_open( fh, fn, mode ) \
     fh = fopen(fn, mode); \
     if ( !fh ) { \
@@ -30,7 +21,6 @@ static void show_usage(void);
 main(int argc, char *argv[]) {
     int     c;
     int     flags;
-    mko_doc doc;
     FILE    *read_from = 0;
     FILE    *write_to  = 0;
 
@@ -101,8 +91,7 @@ main(int argc, char *argv[]) {
 
     if (!write_to) write_to = stdout;
 
-    mko_parse( &doc, read_from,  flags );
-    markover(  &doc, write_to, flags );
+    markover(  read_from, write_to, flags );
     exit(EXIT_SUCCESS);
 }
 
@@ -126,9 +115,27 @@ static void show_usage(void) {
 	puts("General options:");
     puts("  -r --read-from  FILENAME  Markdown file from which to read.");
     puts("  -w --write-to   FILENAME  File to which to write output.");
-    puts("  -V --verbose              Incremental verbose mode.");
+/*     puts("  -V --verbose              Incremental verbose mode."); */
     puts("  -h --help                 Output this usage statement and exit.");
-/*     puts("  -v --version              Output version information and exit."); */
+    puts("  -v --version              Output version information and exit.");
     puts("");
     puts("Report bugs to <bugs@markover.info>.");
 }
+
+/* 
+ * Features to add from discount?:
+ * -b --url-base
+ * -d --debug
+ *    --no-pants
+ *    --no-image
+ *    --no-links
+ *    --no-html
+ *    --expand-quotes (" => &quot;)
+ *    --no-header
+ *    --tabstop 4
+ *    --with-toc
+ *    --compat (strict Markdown.pl compatibility)
+ *    --no-spans (pseudo-protocols)?
+ *    --relax-em (relaxed emphasis)?
+ * -t --text
+ */
